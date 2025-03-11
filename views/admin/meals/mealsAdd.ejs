@@ -1,0 +1,338 @@
+<!-- BEGIN: Head-->
+
+<%-include('../../common/header')%>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+  class="vertical-layout vertical-menu-modern navbar-floating footer-static"
+  data-open="click"
+  data-menu="vertical-menu-modern"
+  data-col=""
+>
+  <!-- BEGIN: Header-->
+  <%-include('../../common/navbar')%>
+
+  <!-- END: Header-->
+
+  <!-- BEGIN: Main Menu-->
+  <%-include('../../common/sidebar')%>
+  <!-- END: Main Menu-->
+
+  <!-- BEGIN: Content-->
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+      <div class="content-header row"></div>
+      <div class="content-body">
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-12 mb-2">
+            <div class="auth-wrapper auth-v1 px-2">
+              <div class="auth-inner py-2">
+                <!-- Add Meal -->
+                <div class="card mb-0">
+                  <div class="card-body">
+                    <!-- Back Button -->
+                    <a href="/admin/meals_listing" class="btn btn-primary">
+                      <i
+                        class="ph ph-arrow-fat-lines-left"
+                        style="font-size: 20px"
+                      ></i>
+                    </a>
+
+                    <h3 class="text-center mb-4">Add Meal</h3>
+
+                    <!-- Meal Form -->
+                    <form
+                      action="/admin/create_meals"
+                      enctype="multipart/form-data"
+                      id="addMealForm"
+                      method="post"
+                    >
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="mealType" class="form-label"
+                            >Meal Type</label
+                          >
+                          <select
+                            id="mealType"
+                            class="form-control"
+                            name="mealType"
+                            required
+                          >
+                            <option value="">Select a meal type</option>
+                            <option value="1">Breakfast</option>
+                            <option value="2">Lunch</option>
+                            <option value="3">Dinner</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="mealName" class="form-label"
+                            >Meal Name</label
+                          >
+                          <input
+                            id="mealName"
+                            type="text"
+                            class="form-control"
+                            name="mealName"
+                            placeholder="Enter meal name"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="mealTime" class="form-label"
+                            >Meal Time</label
+                          >
+                          <div class="input-group">
+                            <!-- Start Time -->
+                            <select
+                              id="startHours"
+                              name="startHours"
+                              class="form-select"
+                              required
+                            >
+                              <option value="">HH</option>
+                              <% for (let i = 1; i <= 12; i++) { %>
+                              <option value="<%= i %>"><%= i %></option>
+                              <% } %>
+                            </select>
+                            <span class="input-group-text">:</span>
+
+                            <select
+                              id="startMinutes"
+                              name="startMinutes"
+                              class="form-select"
+                              required
+                            >
+                              <option value="">MM</option>
+                              <% for (let i = 0; i < 60; i += 5) { %>
+                              <option value="<%= i %>">
+                                <%= i.toString().padStart(2, "0") %>
+                              </option>
+                              <% } %>
+                            </select>
+
+                            <select
+                              id="startAmpm"
+                              name="startAmpm"
+                              class="form-select"
+                              required
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+
+                            <span class="input-group-text">-</span>
+
+                            <!-- End Time -->
+                            <select
+                              id="endHours"
+                              name="endHours"
+                              class="form-select"
+                              required
+                            >
+                              <option value="">HH</option>
+                              <% for (let i = 1; i <= 12; i++) { %>
+                              <option value="<%= i %>"><%= i %></option>
+                              <% } %>
+                            </select>
+                            <span class="input-group-text">:</span>
+
+                            <select
+                              id="endMinutes"
+                              name="endMinutes"
+                              class="form-select"
+                              required
+                            >
+                              <option value="">MM</option>
+                              <% for (let i = 0; i < 60; i += 5) { %>
+                              <option value="<%= i %>">
+                                <%= i.toString().padStart(2, "0") %>
+                              </option>
+                              <% } %>
+                            </select>
+
+                            <select
+                              id="endAmpm"
+                              name="endAmpm"
+                              class="form-select"
+                              required
+                            >
+                              <option value="AM">AM</option>
+                              <option value="PM">PM</option>
+                            </select>
+
+                            <span class="input-group-text">
+                              <i
+                                class="ph ph-clock"
+                                style="font-size: 20px"
+                              ></i>
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="mealPic" class="form-label"
+                            >Meal Image</label
+                          >
+                          <input
+                            id="mealPic"
+                            type="file"
+                            class="form-control"
+                            name="mealPic"
+                            accept="image/*"
+                            required
+                          />
+
+                          <!-- Image Preview Section -->
+                          <div
+                            id="imagePreviewContainer"
+                            style="
+                              display: none;
+                              position: relative;
+                              margin-top: 10px;
+                            "
+                          >
+                            <img
+                              id="imagePreview"
+                              src=""
+                              alt="Selected Image"
+                              style="max-width: 150px; border-radius: 5px"
+                            />
+
+                            <!-- "X" button inside the image preview -->
+                            <button
+                              id="removeImage"
+                              type="button"
+                              style="
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                background: rgba(255, 0, 0, 0.8);
+                                color: white;
+                                border: none;
+                                border-radius: 50%;
+                                width: 24px;
+                                height: 24px;
+                                cursor: pointer;
+                                font-size: 16px;
+                                line-height: 24px;
+                                text-align: center;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                              "
+                            >
+                              ✖
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-dark">
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- /Add Meal -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Content-->
+
+  <%-include('../../common/script')%>
+
+  <!-- Include jQuery and Timepicker Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.14.1/jquery.timepicker.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.14.1/jquery.timepicker.min.css"
+  />
+
+  <script>
+    $(document).ready(function () {
+      console.log("Document is ready");
+
+      $(".input-group-text").click(function () {
+        $("#startHours").focus(); // Focus first on start hours when clicking clock icon
+      });
+
+      // Validate that both start time and end time are selected before form submission
+      $("form").submit(function (e) {
+        let startHours = $("#startHours").val();
+        let startMinutes = $("#startMinutes").val();
+        let startAmpm = $("#startAmpm").val();
+        let endHours = $("#endHours").val();
+        let endMinutes = $("#endMinutes").val();
+        let endAmpm = $("#endAmpm").val();
+
+        if (
+          !startHours ||
+          !startMinutes ||
+          !startAmpm ||
+          !endHours ||
+          !endMinutes ||
+          !endAmpm
+        ) {
+          e.preventDefault();
+          alert("Please select a valid start and end time.");
+        }
+      });
+
+      // Image Preview
+      $("#mealPic").change(function (event) {
+        let input = event.target;
+        let file = input.files[0];
+
+        if (file) {
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            $("#imagePreview").attr("src", e.target.result);
+            $("#imagePreviewContainer").show(); // Show preview with "X" button
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Remove selected image when clicking the "X" button
+      $("#removeImage").click(function () {
+        $("#mealPic").val(""); // Clear the file input
+        $("#imagePreviewContainer").hide(); // Hide the preview
+      });
+
+      // Form validation
+      $('form[id="addMealForm"]').validate({
+        rules: {
+          mealType: { required: true },
+          mealName: { required: true },
+          mealTime: { required: true },
+          mealPic: { required: true, extension: "jpg|jpeg|png|gif" },
+        },
+        messages: {
+          mealType: "Please select a meal type.",
+          mealName: "Meal name is required.",
+          mealTime: "Meal time is required.",
+          mealPic: "Please upload a meal image (jpg, jpeg, png, gif).",
+        },
+        errorPlacement: function (error, element) {
+          error.insertAfter(element);
+          console.error("Validation error: ", error.text());
+        },
+      });
+    });
+  </script>
+</body>

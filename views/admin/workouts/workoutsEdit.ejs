@@ -1,0 +1,481 @@
+<!-- BEGIN: Head-->
+<%-include('../../common/header')%>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+<body
+  class="vertical-layout vertical-menu-modern navbar-floating footer-static"
+  data-open="click"
+  data-menu="vertical-menu-modern"
+  data-col=""
+>
+  <!-- BEGIN: Header-->
+  <%-include('../../common/navbar')%>
+  <!-- END: Header-->
+
+  <!-- BEGIN: Main Menu-->
+  <%-include('../../common/sidebar')%>
+  <!-- END: Main Menu-->
+
+  <!-- BEGIN: Content-->
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+      <div class="content-header row"></div>
+      <div class="content-body">
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-12 mb-2">
+            <div class="auth-wrapper auth-v1 px-2">
+              <div class="auth-inner py-2">
+                <!-- Edit Workout -->
+                <div class="card mb-0">
+                  <div class="card-body">
+                    <!-- Back Button -->
+                    <a href="/admin/workouts_listing" class="btn btn-primary">
+                      <i
+                        class="ph ph-arrow-fat-lines-left"
+                        style="font-size: 20px"
+                      ></i>
+                    </a>
+
+                    <h3 class="text-center mb-4">Edit Workout</h3>
+
+                    <!-- Workout Form -->
+                    <form
+                      action="/admin/update_workout"
+                      enctype="multipart/form-data"
+                      id="editWorkoutForm"
+                      method="post"
+                    >
+                    <input type="hidden" name="workoutsId" value="<%= data.id %>" />
+                      
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutType" class="form-label"
+                            >Workout Type</label
+                          >
+                          <select
+                            id="workoutType"
+                            class="form-control"
+                            name="workoutType"
+                            required
+                          >
+                            <option value="">Select a workout type</option>
+                            <option value="1" <%= data.workoutType == 1 ? 'selected' : '' %>>General Fitness</option>
+                            <option value="2" <%= data.workoutType == 2 ? 'selected' : '' %>>Football Specific</option>
+                            <option value="3" <%= data.workoutType == 3 ? 'selected' : '' %>>Workout Logging</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutName" class="form-label"
+                            >Workout Name</label
+                          >
+                          <input
+                            id="workoutName"
+                            type="text"
+                            class="form-control"
+                            name="workoutName"
+                            placeholder="Enter workout name"
+                            value="<%= data.workoutName %>"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutTime" class="form-label"
+                            >Workout Time</label
+                          >
+                          <select
+                            id="workoutTime"
+                            class="form-control"
+                            name="workoutTime"
+                            required
+                          >
+                            <option value="">Select duration</option>
+                            <option value="10 min" <%= data.workoutTime == '10 min' ? 'selected' : '' %>>10 min</option>
+                            <option value="15 min" <%= data.workoutTime == '15 min' ? 'selected' : '' %>>15 min</option>
+                            <option value="20 min" <%= data.workoutTime == '20 min' ? 'selected' : '' %>>20 min</option>
+                            <option value="30 min" <%= data.workoutTime == '30 min' ? 'selected' : '' %>>30 min</option>
+                            <option value="45 min" <%= data.workoutTime == '45 min' ? 'selected' : '' %>>45 min</option>
+                            <option value="1 hr" <%= data.workoutTime == '1 hr' ? 'selected' : '' %>>1 hr</option>
+                            <option value="1 hr 30 min" <%= data.workoutTime == '1 hr 30 min' ? 'selected' : '' %>>1 hr 30 min</option>
+                            <option value="2 hrs" <%= data.workoutTime == '2 hrs' ? 'selected' : '' %>>2 hrs</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="workoutPic" class="form-label">Workout Image</label>
+                            <input
+                                id="workoutPic"
+                                type="file"
+                                class="form-control"
+                                name="workoutPic"
+                                accept="image/*"
+                            />
+                            <!-- Current Image Preview -->
+                            <div class="mt-2">
+                                <small>Current Image:</small>
+                                <div 
+                                    id="currentImageContainer" 
+                                    class="<%= data.workoutPic ? '' : 'hidden' %>"
+                                >
+                                    <img 
+                                        src="<%= data.workoutPic ?  data.workoutPic : '' %>" 
+                                        alt="Current Workout Image"
+                                    />
+                                </div>
+                            </div>
+                        
+                            <!-- New Image Preview Section -->
+                            <div
+                                id="imagePreviewContainer"
+                                style="display: none; position: relative; margin-top: 10px;"
+                            >
+                                <small>New Image:</small>
+                                <div style="position: relative; display: inline-block;">
+                                    <img
+                                        id="imagePreview"
+                                        src=""
+                                        alt="Selected Image"
+                                        style="max-width: 150px; border-radius: 5px"
+                                    />
+                                    <!-- "X" button to remove selected image -->
+                                    <button
+                                        id="removeImage"
+                                        type="button"
+                                        style="
+                                            position: absolute;
+                                            top: 5px;
+                                            right: 5px; /* Changed from left to right */
+                                            background: rgba(255, 0, 0, 0.8);
+                                            color: white;
+                                            border: none;
+                                            border-radius: 50%;
+                                            width: 24px;
+                                            height: 24px;
+                                            cursor: pointer;
+                                            font-size: 16px;
+                                            line-height: 24px;
+                                            text-align: center;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                                        "
+                                    >
+                                        ✖
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="workoutDescription" class="form-label"
+                            >Workout Description</label
+                          >
+                          <textarea
+                            id="workoutDescription"
+                            class="form-control"
+                            name="workoutDescription"
+                            placeholder="Enter workout description"
+                          ><%= data.workoutDescription %></textarea>
+                        </div>
+                      </div>
+
+                      <!-- Exercise Section -->
+                      <h4 class="mb-3">Workout Exercises</h4>
+
+                      <div id="exercise-container">
+                        <!-- Existing Exercises -->
+                        <% if (exercises && exercises.length > 0) { %>
+                          <% exercises.forEach((exercise, index) => { %>
+                            <div class="row exercise-row align-items-end">
+                              <input type="hidden" name="exerciseId" value="<%= exercise.id %>">
+                              <div class="col-md-2 mb-3">
+                                <label class="form-label <%= index > 0 ? 'd-none' : '' %>">Exercise Name</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="exerciseName"
+                                  placeholder="Enter exercise name"
+                                  value="<%= exercise.exerciseName %>"
+                                  required
+                                />
+                              </div>
+                              <div class="col-md-2 mb-3">
+                                <label class="form-label <%= index > 0 ? 'd-none' : '' %>">Sets</label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  name="sets"
+                                  min="1"
+                                  placeholder="Sets"
+                                  value="<%= exercise.sets %>"
+                                  required
+                                />
+                              </div>
+                              <div class="col-md-2 mb-3">
+                                <label class="form-label <%= index > 0 ? 'd-none' : '' %>">Reps</label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  name="reps"
+                                  min="1"
+                                  placeholder="Reps"
+                                  value="<%= exercise.reps %>"
+                                  required
+                                />
+                              </div>
+                              <div class="col-md-2 mb-3">
+                                <label class="form-label <%= index > 0 ? 'd-none' : '' %>">Time</label>
+                                <select
+                                  class="form-control"
+                                  name="exerciseTime"
+                                  required
+                                >
+                                  <option value="">Select time</option>
+                                  <option value="10 sec" <%= exercise.exerciseTime == '10 sec' ? 'selected' : '' %>>10 sec</option>
+                                  <option value="20 sec" <%= exercise.exerciseTime == '20 sec' ? 'selected' : '' %>>20 sec</option>
+                                  <option value="30 sec" <%= exercise.exerciseTime == '30 sec' ? 'selected' : '' %>>30 sec</option>
+                                  <option value="45 sec" <%= exercise.exerciseTime == '45 sec' ? 'selected' : '' %>>45 sec</option>
+                                  <option value="1 min" <%= exercise.exerciseTime == '1 min' ? 'selected' : '' %>>1 min</option>
+                                  <option value="2 min" <%= exercise.exerciseTime == '2 min' ? 'selected' : '' %>>2 min</option>
+                                  <option value="5 min" <%= exercise.exerciseTime == '5 min' ? 'selected' : '' %>>5 min</option>
+                                </select>
+                              </div>
+                              <div class="col-md-3 mb-3">
+                                <label class="form-label <%= index > 0 ? 'd-none' : '' %>">Exercise Description</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="exerciseDescription"
+                                  placeholder="Enter exercise description"
+                                  value="<%= exercise.exerciseDescription %>"
+                                />
+                              </div>
+                              <div class="col-md-1 mb-3 d-flex align-items-end">
+                                <button
+                                  type="button"
+                                  class="btn btn-danger remove-exercise"
+                                  data-id="<%= exercise.id %>"
+                                >
+                                  <i class="fas fa-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          <% }) %>
+                        <% } else { %>
+                          <!-- Default Exercise Row if no exercises exist -->
+                          <div class="row exercise-row align-items-end">
+                            <div class="col-md-2 mb-3">
+                              <label class="form-label">Exercise Name</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="exerciseName"
+                                placeholder="Enter exercise name"
+                                required
+                              />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                              <label class="form-label">Sets</label>
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="sets"
+                                min="1"
+                                placeholder="Sets"
+                                required
+                              />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                              <label class="form-label">Reps</label>
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="reps"
+                                min="1"
+                                placeholder="Reps"
+                                required
+                              />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                              <label class="form-label">Time</label>
+                              <select
+                                class="form-control"
+                                name="exerciseTime"
+                                required
+                              >
+                                <option value="">Select time</option>
+                                <option value="10 sec">10 sec</option>
+                                <option value="20 sec">20 sec</option>
+                                <option value="30 sec">30 sec</option>
+                                <option value="45 sec">45 sec</option>
+                                <option value="1 min">1 min</option>
+                                <option value="2 min">2 min</option>
+                                <option value="5 min">5 min</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label class="form-label">Exercise Description</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="exerciseDescription"
+                                placeholder="Enter exercise description"
+                              />
+                            </div>
+                            <div class="col-md-1 mb-3 d-flex align-items-end">
+                              <button
+                                type="button"
+                                class="btn btn-danger remove-exercise"
+                              >
+                                <i class="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </div>
+                        <% } %>
+                      </div>
+
+                      <!-- Add Exercise Button -->
+                      <div class="text-center mb-3">
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          id="add-exercise"
+                        >
+                          <i class="fas fa-plus-circle"></i> Add Exercise
+                        </button>
+                      </div>
+
+                      <!-- Hidden field to track deleted exercises -->
+                      <input type="hidden" name="deletedExercises" id="deletedExercises" value="" />
+
+                      <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-dark">
+                          Update Workout
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- /Edit Workout -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Content-->
+
+  <style>
+    #currentImageContainer {
+  position: relative;
+  margin-top: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+#currentImageContainer img {
+  max-width: 150px;
+  border-radius: 5px;
+}
+
+  </style>
+
+  <%-include('../../common/script')%>
+
+  <script>
+    $(document).ready(function () {
+      // Track deleted exercises
+      let deletedExerciseIds = [];
+      
+      // Add Exercise Row
+      $("#add-exercise").click(function () {
+        let newExercise = `
+          <div class="row exercise-row align-items-end">
+            <div class="col-md-2 mb-3">
+              <input type="text" class="form-control" name="exerciseName" placeholder="Enter exercise name" required />
+            </div>
+            <div class="col-md-2 mb-3">
+              <input type="number" class="form-control" name="sets" min="1" placeholder="Sets" required />
+            </div>
+            <div class="col-md-2 mb-3">
+              <input type="number" class="form-control" name="reps" min="1" placeholder="Reps" required />
+            </div>
+            <div class="col-md-2 mb-3">
+              <select class="form-control" name="exerciseTime" required>
+                <option value="">Select time</option>
+                <option value="10 sec">10 sec</option>
+                <option value="20 sec">20 sec</option>
+                <option value="30 sec">30 sec</option>
+                <option value="45 sec">45 sec</option>
+                <option value="1 min">1 min</option>
+                <option value="2 min">2 min</option>
+                <option value="5 min">5 min</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <input type="text" class="form-control" name="exerciseDescription" placeholder="Enter exercise description" />
+            </div>
+            <div class="col-md-1 mb-3 d-flex align-items-end">
+              <button type="button" class="btn btn-danger remove-exercise"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+        $("#exercise-container").append(newExercise);
+      });
+
+      // Remove Exercise Row
+      $(document).on("click", ".remove-exercise", function () {
+        const exerciseId = $(this).data('id');
+        if (exerciseId) {
+          deletedExerciseIds.push(exerciseId);
+          $('#deletedExercises').val(JSON.stringify(deletedExerciseIds));
+        }
+        $(this).closest(".exercise-row").remove();
+      });
+
+      // Image Preview
+      $("#workoutPic").change(function (event) {
+        let input = event.target;
+        let file = input.files[0];
+
+        if (file) {
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            $("#imagePreview").attr("src", e.target.result);
+            $("#imagePreviewContainer").show(); // Show preview with "X" button
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Remove selected image when clicking the "X" button
+      $("#removeImage").click(function () {
+        $("#workoutPic").val(""); // Clear the file input
+        $("#imagePreviewContainer").hide(); // Hide the preview
+      });
+
+      // Form submission
+      $("#editWorkoutForm").submit(function() {
+        // Ensure at least one exercise exists
+        if ($('.exercise-row').length === 0) {
+          alert("Please add at least one exercise");
+          return false;
+        }
+        return true;
+      });
+    });
+  </script>
+</body>

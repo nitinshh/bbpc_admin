@@ -1,0 +1,328 @@
+<!-- BEGIN: Head-->
+
+<%-include('../../common/header')%>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body
+  class="vertical-layout vertical-menu-modern navbar-floating footer-static"
+  data-open="click"
+  data-menu="vertical-menu-modern"
+  data-col=""
+>
+  <!-- BEGIN: Header-->
+  <%-include('../../common/navbar')%>
+
+  <!-- END: Header-->
+
+  <!-- BEGIN: Main Menu-->
+  <%-include('../../common/sidebar')%>
+  <!-- END: Main Menu-->
+
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+      <div class="content-body">
+        <div class="card card-body">
+          <!-- Meal Tabs -->
+          <div class="meal-tabs d-flex justify-content-center">
+            <div class="meal-tab active" data-meal="1">Breakfast</div>
+            <div class="meal-tab" data-meal="2">Lunch</div>
+            <div class="meal-tab" data-meal="3">Dinner</div>
+          </div>
+
+          <!-- Separation Line -->
+          <div class="separator-line"></div>
+
+          <!-- Add Meal Button -->
+          <div class="add-meal-container">
+            <i class="fas fa-plus-circle add-meal-btn"></i>
+          </div>
+
+          <!-- Meal List -->
+          <div class="row" id="meal-list">
+            <% meals_data.forEach((meal) => { %> <% if (meal.mealType === 1) {
+            %>
+            <!-- Show only breakfast by default -->
+            <div class="col-md-4 d-flex justify-content-center">
+              <div
+                class="card meal-card p-2 d-flex flex-row align-items-center position-relative"
+                data-meal="<%= meal.mealType %>"
+              >
+                <!-- Delete Button -->
+                <i
+                  class="fas fa-trash-alt delete-meal-btn position-absolute"
+                  style="top: 10px; right: 10px; cursor: pointer; color: red"
+                  data-meal-id="<%= meal.id %>"
+                ></i>
+
+                <!-- Meal Image -->
+                <img
+                  src="<%= meal.mealPic ? meal.mealPic : '/assets/placeholder.png' %>"
+                  class="meal-img me-3"
+                  alt="Meal Image"
+                />
+
+                <!-- Meal Details -->
+                <div
+                  class="meal-details d-flex flex-column justify-content-center"
+                >
+                  <h6 class="meal-type">
+                    <strong>Breakfast</strong>
+                  </h6>
+                  <h5 class="meal-name mb-1"><%= meal.mealName %></h5>
+                  <p class="meal-time mb-0"><%= meal.mealTime %></p>
+                </div>
+              </div>
+            </div>
+            <% } %> <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%-include('../../common/footer')%> <%-include('../../common/script')%>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    .card {
+      background: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .meal-tabs {
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .meal-tab {
+      cursor: pointer;
+      padding: 10px 20px;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .meal-tab.active {
+      color: red;
+    }
+
+    .meal-tab.active::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: red;
+    }
+
+    .separator-line {
+      width: 80%;
+      height: 2px;
+      background-color: #ccc;
+      margin: 10px auto 20px;
+    }
+
+    .add-meal-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .add-meal-btn {
+      font-size: 30px;
+      color: green;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .add-meal-btn:hover {
+      color: darkgreen;
+    }
+
+    .meal-card {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      flex-direction: row;
+      width: 100%;
+      max-width: 350px;
+      position: relative;
+      background-color: white;
+    }
+
+    .meal-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .meal-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .meal-details {
+      flex-grow: 1;
+      padding-left: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .meal-type {
+      font-weight: bold;
+      color: #333;
+      font-size: 1rem;
+    }
+
+    .meal-name,
+    .meal-time {
+      font-size: 13px;
+      font-weight: normal;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    $(document).ready(function () {
+      function loadMeals(mealType) {
+        console.log("Loading meals for type:", mealType);
+
+        $.ajax({
+          url: `/admin/get_meals/${mealType}`,
+          type: "GET",
+          success: function (data) {
+            console.log("Response received:", data);
+            if (data.success && data.meals.length > 0) {
+              let mealHTML = "";
+              data.meals.forEach((meal) => {
+                mealHTML += `
+              <div class="col-md-4 d-flex justify-content-center">
+                <div class="card meal-card p-2 d-flex flex-row align-items-center position-relative"
+                    data-meal="${meal.mealType}">
+                  <i class="fas fa-trash-alt delete-meal-btn position-absolute"
+                    style="top: 10px; right: 10px; cursor: pointer; color: red"
+                    data-meal-id="${meal.id}"></i>
+                  <img src="${
+                    meal.mealPic ? meal.mealPic : "/assets/placeholder.png"
+                  }"
+                    class="meal-img me-3"
+                    alt="Meal Image"/>
+                  <div class="meal-details d-flex flex-column justify-content-center">
+                    <h6 class="meal-type"><strong>${getMealType(
+                      meal.mealType
+                    )}</strong></h6>
+                    <h5 class="meal-name mb-1">${meal.mealName}</h5>
+                    <p class="meal-time mb-0">${meal.mealTime}</p>
+                  </div>
+                </div>
+              </div>`;
+              });
+              $("#meal-list").html(mealHTML);
+            } else {
+              console.log("No meals found.");
+              $("#meal-list").html(
+                "<p class='text-center'>No meals available.</p>"
+              );
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to load meals.", error);
+          },
+        });
+      }
+
+      function getMealType(mealType) {
+        switch (mealType) {
+          case 1:
+            return "Breakfast";
+          case 2:
+            return "Lunch";
+          case 3:
+            return "Dinner";
+          default:
+            return "Unknown";
+        }
+      }
+
+      $(".meal-tab").click(function () {
+        $(".meal-tab").removeClass("active");
+        $(this).addClass("active");
+        const selectedMeal = parseInt($(this).data("meal"));
+        loadMeals(selectedMeal);
+      });
+
+      // Load breakfast by default
+      loadMeals(1);
+    });
+  </script>
+
+  <script>
+    $(".add-meal-btn").click(function () {
+      window.location.href = "/admin/add_meals";
+    });
+
+    $(document).on("click", ".delete-meal-btn", function () {
+      const mealId = $(this).data("meal-id");
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/admin/delete_meals/${mealId}`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ id: mealId }),
+            success: function () {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Meal has been deleted successfully.",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              setTimeout(() => {
+                // Find and remove the deleted meal card
+                const deletedCard = $(`[data-meal-id="${mealId}"]`).closest(
+                  ".col-md-4"
+                );
+                deletedCard.fadeOut(300, function () {
+                  $(this).remove();
+
+                  // Rearrange meal cards dynamically
+                  $("#meal-list .col-md-4").each(function (index) {
+                    $(this).css("order", index + 1);
+                  });
+                });
+              }, 1000);
+            },
+            error: function () {
+              Swal.fire({
+                title: "Error!",
+                text: "Failed to delete meal.",
+                icon: "error",
+              });
+            },
+          });
+        }
+      });
+    });
+  </script>
+</body>

@@ -1,0 +1,182 @@
+<div
+  class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
+  data-scroll-to-active="true"
+  style="background: linear-gradient(to right, #2a2a2a, #555)"
+>
+  <div class="navbar-header">
+    <ul class="nav navbar-nav flex-row">
+      <li class="nav-item mx-auto w-100">
+        <a class="navbar-brand me-0 w-100" href="/admin/dashboard">
+          <span class="brand-logo w-100">
+            <img
+              src="../../assets/logo1.png"
+              alt=""
+              style="
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                margin-left: -7px;
+                object-fit: cover;
+                transition: all 0.3s ease;
+              "
+              class="sidebar-logo"
+            />
+          </span>
+        </a>
+      </li>
+
+      <li class="nav-item nav-toggle">
+        <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"
+          ><i
+            class="d-block d-xl-none text-primary toggle-icon font-medium-4"
+            data-feather="x"
+          ></i
+          ><i
+            class="d-none d-xl-block collapse-toggle-icon font-medium-4 text-primary"
+            data-feather="disc"
+            data-ticon="disc"
+          ></i
+        ></a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-menu-content">
+    <ul
+      class="navigation navigation-main"
+      id="main-menu-navigation"
+      data-menu="menu-navigation"
+    >
+      <li
+        class="<% if(title =='Dashboard'){ %> nav-item dropdown active <% }%>"
+      >
+        <a class="d-flex align-items-center" href="/admin/dashboard"
+          ><i class="fas fa-home"></i>
+          <span class="menu-title text-truncate" data-i18n="Dashboards"
+            >Dashboard</span
+          ></a
+        >
+      </li>
+      <li class="<% if(title =='Users'){ %> nav-item dropdown active <% }%>">
+        <a class="d-flex align-items-center" href="/admin/users_listing">
+          <i class="fas fa-users"></i>
+          <span class="menu-title text-truncate" data-i18n="Users"
+            >Users</span
+          ></a
+        >
+      </li>
+
+      <li class="<% if(title == 'Meals'){ %> nav-item dropdown active <% } %>">
+        <a class="d-flex align-items-center" href="/admin/meals_listing">
+          <i class="fas fa-utensils"></i>
+          <span class="menu-title text-truncate" data-i18n="Meals">Meals</span>
+        </a>
+      </li>
+
+      <li class="<% if(title =='Workouts'){ %> nav-item dropdown active <% }%>">
+        <a class="d-flex align-items-center" href="/admin/workouts_listing">
+          <i class="fas fa-weight-hanging"></i>
+          <span class="menu-title text-truncate" data-i18n="Workouts"
+            >Workouts</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Fitness Enthusiast'){ %> nav-item dropdown active <% } %>"
+      >
+        <a
+          class="d-flex align-items-center"
+          href="/admin/fitnessenthusiast_listing"
+        >
+          <i class="fas fa-dumbbell"></i>
+          <span class="menu-title text-truncate" data-i18n="Fitness Enthusiast"
+            >Fitness Enthusiasts</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Footballer'){ %> nav-item dropdown active <% } %>"
+      >
+        <a class="d-flex align-items-center" href="/admin/footballer_listing">
+          <i class="fas fa-futbol"></i>
+          <span class="menu-title text-truncate" data-i18n="Footballer"
+            >Footballers</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Dual Focus'){ %> nav-item dropdown active <% } %>"
+      >
+        <a class="d-flex align-items-center" href="/admin/dualfocus_listing">
+          <i class="fas fa-person-running"></i>
+          <span class="menu-title text-truncate" data-i18n="Dual Focus"
+            >Dual Focus</span
+          >
+        </a>
+      </li>
+
+      <li class="<% if(title == 'Coach'){ %> nav-item dropdown active <% } %>">
+        <a class="d-flex align-items-center" href="/admin/coach_listing">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span class="menu-title text-truncate" data-i18n="Coach">Coach</span>
+        </a>
+      </li>
+
+      <li class="<% if(title == 'Faq'){ %> nav-item dropdown active <% } %>">
+        <a class="d-flex align-items-center" href="/admin/faq_list">
+          <i class="fas fa-question-circle"></i>
+          <span class="menu-title text-truncate" data-i18n="Coach">FAQ's</span>
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Customer Support'){ %> nav-item dropdown active <% }%>"
+      >
+        <a
+          class="d-flex align-items-center"
+          href="/admin/customersupport_listing"
+        >
+          <i class="fas fa-headset"></i>
+          <span class="menu-title text-truncate" data-i18n="Customer Support"
+            >Customer Support</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'About Us'){ %> nav-item dropdown active <% }%>"
+      >
+        <a class="d-flex align-items-center" href="/admin/aboutUs">
+          <i class="fas fa-info-circle"></i>
+          <span class="menu-title text-truncate" data-i18n="About Us"
+            >About Us</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Privacy Policy'){ %> nav-item dropdown active <% }%>"
+      >
+        <a class="d-flex align-items-center" href="/admin/privacypolicy">
+          <i class="fas fa-file-alt"></i>
+          <span class="menu-title text-truncate" data-i18n="Privacy Policy"
+            >Privacy Policy</span
+          >
+        </a>
+      </li>
+
+      <li
+        class="<% if(title == 'Terms & Conditions'){ %> nav-item dropdown active <% }%>"
+      >
+        <a class="d-flex align-items-center" href="/admin/termsconditions">
+          <i class="fas fa-file-signature"></i>
+          <span class="menu-title text-truncate" data-i18n="Terms & Conditions"
+            >Terms & Conditions</span
+          >
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

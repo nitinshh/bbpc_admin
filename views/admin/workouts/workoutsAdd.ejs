@@ -1,0 +1,377 @@
+<!-- BEGIN: Head-->
+<%-include('../../common/header')%>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+<body
+  class="vertical-layout vertical-menu-modern navbar-floating footer-static"
+  data-open="click"
+  data-menu="vertical-menu-modern"
+  data-col=""
+>
+  <!-- BEGIN: Header-->
+  <%-include('../../common/navbar')%>
+  <!-- END: Header-->
+
+  <!-- BEGIN: Main Menu-->
+  <%-include('../../common/sidebar')%>
+  <!-- END: Main Menu-->
+
+  <!-- BEGIN: Content-->
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+      <div class="content-header row"></div>
+      <div class="content-body">
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-12 mb-2">
+            <div class="auth-wrapper auth-v1 px-2">
+              <div class="auth-inner py-2">
+                <!-- Add Workout -->
+                <div class="card mb-0">
+                  <div class="card-body">
+                    <!-- Back Button -->
+                    <a href="/admin/workouts_listing" class="btn btn-primary">
+                      <i
+                        class="ph ph-arrow-fat-lines-left"
+                        style="font-size: 20px"
+                      ></i>
+                    </a>
+
+                    <h3 class="text-center mb-4">Add Workout</h3>
+
+                    <!-- Workout Form -->
+                    <form
+                      action="/admin/create_workouts"
+                      enctype="multipart/form-data"
+                      id="addWorkoutForm"
+                      method="post"
+                    >
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutType" class="form-label"
+                            >Workout Type</label
+                          >
+                          <select
+                            id="workoutType"
+                            class="form-control"
+                            name="workoutType"
+                            required
+                          >
+                            <option value="">Select a workout type</option>
+                            <option value="1">General Fitness</option>
+                            <option value="2">Football Specific</option>
+                            <option value="3">Workout Logging</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutName" class="form-label"
+                            >Workout Name</label
+                          >
+                          <input
+                            id="workoutName"
+                            type="text"
+                            class="form-control"
+                            name="workoutName"
+                            placeholder="Enter workout name"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutTime" class="form-label"
+                            >Workout Time</label
+                          >
+                          <select
+                            id="workoutTime"
+                            class="form-control"
+                            name="workoutTime"
+                            required
+                          >
+                            <option value="">Select duration</option>
+                            <option value="10 min">10 min</option>
+                            <option value="15 min">15 min</option>
+                            <option value="20 min">20 min</option>
+                            <option value="30 min">30 min</option>
+                            <option value="45 min">45 min</option>
+                            <option value="1 hr">1 hr</option>
+                            <option value="1 hr 30 min">1 hr 30 min</option>
+                            <option value="2 hrs">2 hrs</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="workoutPic" class="form-label"
+                            >Workout Image</label
+                          >
+                          <input
+                            id="workoutPic"
+                            type="file"
+                            class="form-control"
+                            name="workoutPic"
+                            accept="image/*"
+                          />
+
+                          <!-- Image Preview Section -->
+                          <div
+                            id="imagePreviewContainer"
+                            style="
+                              display: none;
+                              position: relative;
+                              margin-top: 10px;
+                            "
+                          >
+                            <img
+                              id="imagePreview"
+                              src=""
+                              alt="Selected Image"
+                              style="max-width: 150px; border-radius: 5px"
+                            />
+
+                            <!-- "X" button to remove selected image -->
+                            <button
+                              id="removeImage"
+                              type="button"
+                              style="
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                background: rgba(255, 0, 0, 0.8);
+                                color: white;
+                                border: none;
+                                border-radius: 50%;
+                                width: 24px;
+                                height: 24px;
+                                cursor: pointer;
+                                font-size: 16px;
+                                line-height: 24px;
+                                text-align: center;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                              "
+                            >
+                              ✖
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="workoutDescription" class="form-label"
+                            >Workout Description</label
+                          >
+                          <textarea
+                            id="workoutDescription"
+                            class="form-control"
+                            name="workoutDescription"
+                            placeholder="Enter workout description"
+                          ></textarea>
+                        </div>
+                      </div>
+
+                      <!-- Exercise Section -->
+                      <h4 class="mb-3">Workout Exercises</h4>
+
+                      <div id="exercise-container">
+                        <!-- Default Exercise Row -->
+                        <div class="row exercise-row align-items-end">
+                          <div class="col-md-2 mb-3">
+                            <label class="form-label">Exercise Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="exerciseName"
+                              placeholder="Enter exercise name"
+                              required
+                            />
+                          </div>
+                          <div class="col-md-2 mb-3">
+                            <label class="form-label">Sets</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              name="sets"
+                              min="1"
+                              placeholder="Sets"
+                              required
+                            />
+                          </div>
+                          <div class="col-md-2 mb-3">
+                            <label class="form-label">Reps</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              name="reps"
+                              min="1"
+                              placeholder="Reps"
+                              required
+                            />
+                          </div>
+                          <div class="col-md-2 mb-3">
+                            <label class="form-label">Time</label>
+                            <select
+                              class="form-control"
+                              name="exerciseTime"
+                              required
+                            >
+                              <option value="">Select time</option>
+                              <option value="10 sec">10 sec</option>
+                              <option value="20 sec">20 sec</option>
+                              <option value="30 sec">30 sec</option>
+                              <option value="45 sec">45 sec</option>
+                              <option value="1 min">1 min</option>
+                              <option value="2 min">2 min</option>
+                              <option value="5 min">5 min</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3 mb-3">
+                            <label class="form-label"
+                              >Exercise Description</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="exerciseDescription"
+                              placeholder="Enter exercise description"
+                            />
+                          </div>
+                          <div class="col-md-1 mb-3 d-flex align-items-end">
+                            <button
+                              type="button"
+                              class="btn btn-danger remove-exercise"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Add Exercise Button -->
+                      <div class="text-center mb-3">
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          id="add-exercise"
+                        >
+                          <i class="fas fa-plus-circle"></i> Add Exercise
+                        </button>
+                      </div>
+
+                      <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-dark">
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- /Add Workout -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Content-->
+
+  <%-include('../../common/script')%>
+
+  <script>
+    $(document).ready(function () {
+      // Ad`d Exercise Row
+      $("#add-exercise").click(function () {
+        let newExercise = `
+  <div class="row exercise-row align-items-end">
+  <div class="col-md-2 mb-3">
+    <input type="text" class="form-control" name="exerciseName" placeholder="Enter exercise name" required />
+  </div>
+  <div class="col-md-2 mb-3">
+    <input type="number" class="form-control" name="sets" min="1" placeholder="Sets" required />
+  </div>
+  <div class="col-md-2 mb-3">
+    <input type="number" class="form-control" name="reps" min="1" placeholder="Reps" required />
+  </div>
+  <div class="col-md-2 mb-3">
+    <select class="form-control" name="exerciseTime" required>
+      <option value="">Select time</option>
+      <option value="10 sec">10 sec</option>
+      <option value="20 sec">20 sec</option>
+      <option value="30 sec">30 sec</option>
+      <option value="45 sec">45 sec</option>
+      <option value="1 min">1 min</option>
+      <option value="2 min">2 min</option>
+      <option value="5 min">5 min</option>
+    </select>
+  </div>
+  <div class="col-md-3 mb-3">
+    <input type="text" class="form-control" name="exerciseDescription" placeholder="Enter exercise description" required />
+  </div>
+  <div class="col-md-1 mb-3 d-flex align-items-end">
+    <button type="button" class="btn btn-danger remove-exercise"><i class="fas fa-trash"></i></button>
+  </div>
+</div>
+`;
+        $("#exercise-container").append(newExercise);
+      });
+
+      // Remove Exercise Row
+      $(document).on("click", ".remove-exercise", function () {
+        $(this).closest(".exercise-row").remove();
+      });
+    });
+
+    // Image Preview Function
+    function previewImage(event) {
+      const imagePreviewContainer = document.getElementById(
+        "imagePreviewContainer"
+      );
+      const imagePreview = document.getElementById("imagePreview");
+
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          imagePreview.src = reader.result;
+          imagePreviewContainer.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagePreviewContainer.style.display = "none";
+      }
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      // Image Preview
+      $("#workoutPic").change(function (event) {
+        let input = event.target;
+        let file = input.files[0];
+
+        if (file) {
+          let reader = new FileReader();
+          reader.onload = function (e) {
+            $("#imagePreview").attr("src", e.target.result);
+            $("#imagePreviewContainer").show(); // Show preview with "X" button
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Remove selected image when clicking the "X" button
+      $("#removeImage").click(function () {
+        $("#workoutPic").val(""); // Clear the file input
+        $("#imagePreviewContainer").hide(); // Hide the preview
+      });
+    });
+  </script>
+</body>
