@@ -73,7 +73,10 @@
                     <strong>Breakfast</strong>
                   </h6>
                   <h5 class="meal-name mb-1"><%= meal.mealName %></h5>
-                  <p class="meal-time mb-0"><%= meal.mealTime %></p>
+                  <p class="meal-time mb-0">
+                    <%= meal.mealTime.replace(/(\d):/g,
+                    '0$1:').replace(/:([0-9]) /g, ':0$1 ') %>
+                  </p>
                 </div>
               </div>
             </div>
@@ -184,9 +187,13 @@
       font-size: 1rem;
     }
 
-    .meal-name,
-    .meal-time {
+    .meal-name {
       font-size: 13px;
+      font-weight: normal;
+    }
+
+    .meal-time {
+      font-size: 10px;
       font-weight: normal;
     }
   </style>
@@ -223,7 +230,9 @@
                       meal.mealType
                     )}</strong></h6>
                     <h5 class="meal-name mb-1">${meal.mealName}</h5>
-                    <p class="meal-time mb-0">${meal.mealTime}</p>
+                    <p class="meal-time mb-0">
+                      ${meal.mealTime.replace(/(\d):/g, "0$1:").replace(/:([0-9]) /g, ":0$1 ")}
+                    </p>
                   </div>
                 </div>
               </div>`;
