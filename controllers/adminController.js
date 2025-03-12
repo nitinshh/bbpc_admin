@@ -1046,7 +1046,7 @@ module.exports = {
       });
     } catch (error) {
       console.log(error);
-      res.redirect("/admin/add_customersupport");
+      res.redirect("/admin/dashboard");
     }
   },
 
