@@ -9,7 +9,7 @@ const swaggerUi = require("swagger-ui-express");
 const session = require("express-session");
 const flash = require("connect-flash");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3008;
 
 const indexRouter = require("./routes/index");
 const adminRouter = require("./routes/adminRouter")();
